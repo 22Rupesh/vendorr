@@ -31,6 +31,7 @@ export default function VendorDetail() {
   useEffect(() => {
     loadVendorDetails();
     loadProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const change = (e) => {
