@@ -1,0 +1,39 @@
+body {
+  background: #f4f4f4;
+  font-family: Arial;
+}
+
+.container {
+  width: 600px;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+input {
+  display: block;
+  width: 95%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #0055ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #003ebe;
+}
