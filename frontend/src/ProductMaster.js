@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import API_BASE from "./api";
 
@@ -7,12 +7,11 @@ export default function ProductMaster() {
   const [form, setForm] = useState({ productName: "", quantity: "", price: "" });
   const [editingId, setEditingId] = useState(null);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     const res = await axios.get(`${API_BASE}/product/list`);
     setProducts(res.data);
-  };
-  // eslint-disable-next-line
-  useEffect(() => { loadProducts(); }, []);
+  }, [setProducts]);
+  useEffect(() => { loadProducts(); }, [loadProducts]);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

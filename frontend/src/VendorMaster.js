@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import API_BASE from "./api";
 
@@ -7,12 +7,11 @@ export default function VendorMaster() {
   const [form, setForm] = useState({ name: "", email: "", pan: "", mobile: "" });
   const [editingId, setEditingId] = useState(null);
 
-  const loadVendors = async () => {
+  const loadVendors = useCallback(async () => {
     const res = await axios.get(`${API_BASE}/vendor/list`);
     setVendors(res.data);
-  };
-  // eslint-disable-next-line
-  useEffect(() => { loadVendors(); }, []);
+  }, [setVendors]);
+  useEffect(() => { loadVendors(); }, [loadVendors]);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

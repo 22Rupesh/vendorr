@@ -10,24 +10,30 @@ export default function VendorDetail() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ productId: "", quantity: "", price: "", paidAmount: "" });
 
-  const loadVendorDetails = async () => {
+  const refreshVendor = async () => {
     const res = await axios.get(`${API_BASE}/vendor/details/${id}`);
     setVendor(res.data.vendor);
     setTransactions(res.data.transactions);
   };
-  const loadProducts = async () => {
-    const res = await axios.get(`${API_BASE}/product/list`);
-    setProducts(res.data);
-  };
-  // eslint-disable-next-line
-  useEffect(() => { loadVendorDetails(); loadProducts(); }, []);
+
+  useEffect(() => {
+    (async () => {
+      const [vendorRes, productRes] = await Promise.all([
+        axios.get(`${API_BASE}/vendor/details/${id}`),
+        axios.get(`${API_BASE}/product/list`),
+      ]);
+      setVendor(vendorRes.data.vendor);
+      setTransactions(vendorRes.data.transactions);
+      setProducts(productRes.data);
+    })();
+  }, [id]);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const addTransaction = async () => {
     if (!form.productId || !form.quantity || !form.price) { alert("Please fill all fields"); return; }
     await axios.post(`${API_BASE}/vendor/transaction/add`, { vendorId: id, productId: form.productId, quantity: Number(form.quantity), price: Number(form.price), paidAmount: Number(form.paidAmount) });
-    alert("Transaction added!"); setForm({ productId: "", quantity: "", price: "", paidAmount: "" }); loadVendorDetails();
+    alert("Transaction added!"); setForm({ productId: "", quantity: "", price: "", paidAmount: "" }); refreshVendor();
   };
 
   return (
