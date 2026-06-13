@@ -24,7 +24,7 @@ export default function Dashboard() {
           </div>
           <div>
             <h1 className="text-headline-md text-on-surface">Dashboard</h1>
-            <p className="text-body-md text-on-surface-variant mt-0.5">Manage your business operations</p>
+            <p className="text-body-md text-on-surface-variant mt-0.5">Manage your business operation</p>
           </div>
         </div>
 
