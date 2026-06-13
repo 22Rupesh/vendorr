@@ -10,6 +10,7 @@ import ProductList from "./ProductList";
 import VendorMaster from "./VendorMaster";
 import VendorList from "./VendorList";
 import VendorDetail from "./VendorDetail";
+import SaleList from "./SaleList";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/vendor-master" element={<VendorMaster />} />
         <Route path="/vendor-list" element={<VendorList />} />
         <Route path="/vendor-details/:id" element={<VendorDetail />} />
+        <Route path="/sale-list" element={<SaleList />} />
 
 
       </Routes>
