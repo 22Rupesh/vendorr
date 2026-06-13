@@ -11,6 +11,7 @@ export default function ProductMaster() {
     const res = await axios.get(`${API_BASE}/product/list`);
     setProducts(res.data);
   };
+  // eslint-disable-next-line
   useEffect(() => { loadProducts(); }, []);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });

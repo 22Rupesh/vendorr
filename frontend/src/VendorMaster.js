@@ -11,6 +11,7 @@ export default function VendorMaster() {
     const res = await axios.get(`${API_BASE}/vendor/list`);
     setVendors(res.data);
   };
+  // eslint-disable-next-line
   useEffect(() => { loadVendors(); }, []);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });

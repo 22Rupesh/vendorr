@@ -4,11 +4,13 @@ import API_BASE from "./api";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
-  const loadProducts = async () => {
-    const res = await axios.get(`${API_BASE}/product/list`);
-    setProducts(res.data);
-  };
-  useEffect(() => { loadProducts(); }, []);
+  useEffect(() => {
+    const loadProducts = async () => {
+      const res = await axios.get(`${API_BASE}/product/list`);
+      setProducts(res.data);
+    };
+    loadProducts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-navy-900 py-8 sm:py-12 px-4">

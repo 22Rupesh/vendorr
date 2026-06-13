@@ -4,11 +4,13 @@ import API_BASE from "./api";
 
 export default function SaleList() {
   const [sales, setSales] = useState([]);
-  useEffect(() => { loadSales(); }, []);
-  const loadSales = async () => {
-    const res = await axios.get(`${API_BASE}/sale/list`);
-    setSales(res.data);
-  };
+  useEffect(() => {
+    const loadSales = async () => {
+      const res = await axios.get(`${API_BASE}/sale/list`);
+      setSales(res.data);
+    };
+    loadSales();
+  }, []);
 
   const totals = sales.reduce((acc, s) => ({
     totalAmount: acc.totalAmount + Number(s.TotalAmount || 0),

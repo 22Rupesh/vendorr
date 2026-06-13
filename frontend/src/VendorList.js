@@ -7,11 +7,13 @@ export default function VendorList() {
   const [vendors, setVendors] = useState([]);
   const navigate = useNavigate();
 
-  const loadVendors = async () => {
-    const res = await axios.get(`${API_BASE}/vendor/list`);
-    setVendors(res.data);
-  };
-  useEffect(() => { loadVendors(); }, []);
+  useEffect(() => {
+    const loadVendors = async () => {
+      const res = await axios.get(`${API_BASE}/vendor/list`);
+      setVendors(res.data);
+    };
+    loadVendors();
+  }, []);
 
   return (
     <div className="min-h-screen bg-navy-900 py-8 sm:py-12 px-4">
