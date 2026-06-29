@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import API_BASE from "./api";
+import Header from "./Header";
+import PrevButton from "./PrevButton";
 
-export default function VendorDetail() {
+export default function VendorDetail({ onLogout }) {
   const { id } = useParams();
   const [vendor, setVendor] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -37,25 +39,26 @@ export default function VendorDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-navy-900 py-8 sm:py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-headline-lg text-on-surface text-center mb-8">Vendor Detail Dashboard</h1>
+    <div className="min-h-screen bg-surface-dim">
+      <Header onLogout={onLogout} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-headline-lg text-slate-800 mb-6">Vendor Details</h1>
 
         {vendor && (
-          <div className="card mb-8">
-            <h2 className="text-headline-sm text-navy-900 mb-6 pb-2 border-b border-[#E2E8F0]">Vendor Information</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              <div><span className="text-gray-500 text-sm">Name</span><p className="text-navy-900 font-medium">{vendor.Name}</p></div>
-              <div><span className="text-gray-500 text-sm">Email</span><p className="text-navy-900 font-medium">{vendor.Email}</p></div>
-              <div><span className="text-gray-500 text-sm">PAN</span><p className="text-navy-900 font-medium">{vendor.PAN}</p></div>
-              <div><span className="text-gray-500 text-sm">Mobile</span><p className="text-navy-900 font-medium">{vendor.Mobile}</p></div>
+          <div className="card mb-6">
+            <h3 className="text-sm font-semibold text-slate-800 mb-4 pb-2 border-b border-slate-100">Vendor Information</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div><p className="text-xs text-slate-500">Name</p><p className="text-sm font-medium text-slate-800">{vendor.Name}</p></div>
+              <div><p className="text-xs text-slate-500">Email</p><p className="text-sm font-medium text-slate-800">{vendor.Email}</p></div>
+              <div><p className="text-xs text-slate-500">PAN</p><p className="text-sm font-medium text-slate-800">{vendor.PAN}</p></div>
+              <div><p className="text-xs text-slate-500">Mobile</p><p className="text-sm font-medium text-slate-800">{vendor.Mobile}</p></div>
             </div>
           </div>
         )}
 
-        <div className="card mb-8">
-          <h2 className="text-headline-sm text-navy-900 mb-6 pb-2 border-b border-[#E2E8F0]">Add Product Transaction</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="card mb-6">
+          <h3 className="text-sm font-semibold text-slate-800 mb-4 pb-2 border-b border-slate-100">Add Product Transaction</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <select name="productId" onChange={change} value={form.productId} className="input-field">
               <option value="">Select Product</option>
               {products.map((p) => <option key={p.ProductId} value={p.ProductId}>{p.ProductName}</option>)}
@@ -64,12 +67,12 @@ export default function VendorDetail() {
             <input name="price" placeholder="Price" value={form.price} onChange={change} className="input-field" />
             <input name="paidAmount" placeholder="Paid Amount" value={form.paidAmount} onChange={change} className="input-field" />
           </div>
-          <button onClick={addTransaction} className="btn-primary mt-6 w-full sm:w-auto">Add Transaction</button>
+          <button onClick={addTransaction} className="btn-primary mt-4 text-sm">Add Transaction</button>
         </div>
 
-        <div className="card overflow-hidden !p-0">
-          <div className="p-6 pb-0">
-            <h2 className="text-headline-sm text-navy-900 pb-2 border-b border-[#E2E8F0]">Transaction History</h2>
+        <div className="card !p-0 overflow-hidden">
+          <div className="p-5 border-b border-slate-100">
+            <h3 className="text-sm font-semibold text-slate-800">Transaction History</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -87,20 +90,24 @@ export default function VendorDetail() {
               <tbody>
                 {transactions.map((t) => (
                   <tr key={t.TransactionId} className="table-row">
-                    <td className="p-4 text-navy-900 font-medium">{t.TransactionId}</td>
-                    <td className="p-4 text-navy-900">{t.ProductName}</td>
-                    <td className="p-4 text-navy-900">{t.Quantity}</td>
-                    <td className="p-4 text-navy-900">₹ {t.Price}</td>
-                    <td className="p-4 text-navy-900 font-medium">₹ {t.TotalAmount}</td>
-                    <td className="p-4 text-emerald-700 font-medium">₹ {t.PaidAmount}</td>
-                    <td className="p-4 text-red-600 font-bold">₹ {t.Balance}</td>
+                    <td className="p-4 text-sm font-medium text-slate-800">{t.TransactionId}</td>
+                    <td className="p-4 text-sm text-slate-600">{t.ProductName}</td>
+                    <td className="p-4 text-sm text-slate-600">{t.Quantity}</td>
+                    <td className="p-4 text-sm text-slate-600">₹{Number(t.Price).toLocaleString()}</td>
+                    <td className="p-4 text-sm font-medium text-slate-800">₹{Number(t.TotalAmount).toLocaleString()}</td>
+                    <td className="p-4 text-sm font-medium text-emerald-600">₹{Number(t.PaidAmount).toLocaleString()}</td>
+                    <td className={`p-4 text-sm font-semibold ${Number(t.Balance) > 0 ? "text-red-600" : "text-emerald-600"}`}>₹{Number(t.Balance).toLocaleString()}</td>
                   </tr>
                 ))}
+                {transactions.length === 0 && (
+                  <tr><td colSpan={7} className="p-8 text-center text-sm text-slate-400">No transactions found</td></tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      <div className="fixed bottom-4 left-4"><PrevButton /></div>
     </div>
   );
 }

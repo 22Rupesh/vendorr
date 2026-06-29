@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import API_BASE from "./api";
+import Header from "./Header";
+import PrevButton from "./PrevButton";
 
-export default function ResetPassword() {
+export default function ResetPassword({ onLogout }) {
   const [form, setForm] = useState({ username: "", newPassword: "" });
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -18,19 +20,25 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-navy-900 px-4">
-      <div className="card max-w-md w-full">
-        <h2 className="text-headline-md text-navy-900 text-center mb-8">Reset Password</h2>
-        <div className="mb-4">
-          <label className="block text-body-md text-gray-500 mb-2">Username</label>
-          <input name="username" onChange={change} placeholder="Enter your username" className="input-field" />
+    <div className="min-h-screen bg-surface-dim">
+      <Header onLogout={onLogout} />
+      <div className="flex items-center justify-center px-4 py-12">
+        <div className="card max-w-md w-full">
+          <h2 className="text-headline-md text-slate-800 text-center mb-6">Reset Password</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Username</label>
+              <input name="username" onChange={change} placeholder="Enter your username" className="input-field" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
+              <input name="newPassword" type="password" onChange={change} placeholder="Enter new password" className="input-field" />
+            </div>
+          </div>
+          <button onClick={resetPassword} className="btn-primary w-full mt-6">Update Password</button>
         </div>
-        <div className="mb-6">
-          <label className="block text-body-md text-gray-500 mb-2">New Password</label>
-          <input name="newPassword" type="password" onChange={change} placeholder="Enter new password" className="input-field" />
-        </div>
-        <button onClick={resetPassword} className="btn-primary w-full">Update Password</button>
       </div>
+      <div className="fixed bottom-4 left-4"><PrevButton /></div>
     </div>
   );
 }

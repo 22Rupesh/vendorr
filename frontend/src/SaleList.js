@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import API_BASE from "./api";
+import Header from "./Header";
+import PrevButton from "./PrevButton";
 
-export default function SaleList() {
+export default function SaleList({ onLogout }) {
   const [sales, setSales] = useState([]);
   useEffect(() => {
-    const loadSales = async () => {
-      const res = await axios.get(`${API_BASE}/sale/list`);
-      setSales(res.data);
-    };
-    loadSales();
+    (async () => { const res = await axios.get(`${API_BASE}/sale/list`); setSales(res.data); })();
   }, []);
 
   const totals = sales.reduce((acc, s) => ({
@@ -19,26 +17,30 @@ export default function SaleList() {
   }), { totalAmount: 0, totalPaid: 0, totalBalance: 0 });
 
   return (
-    <div className="min-h-screen bg-navy-900 py-8 sm:py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-headline-lg text-on-surface text-center mb-8">Sales Report</h1>
+    <div className="min-h-screen bg-surface-dim">
+      <Header onLogout={onLogout} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6">
+          <h1 className="text-headline-lg text-slate-800">Sales Report</h1>
+          <p className="text-body-md text-slate-500 mt-1">Complete transaction overview across all vendors and products.</p>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="card text-center">
-            <p className="text-caption text-gray-500 uppercase tracking-wider mb-1">Total Amount</p>
-            <p className="text-title-lg text-navy-900 font-bold">₹{totals.totalAmount.toLocaleString()}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="stat-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Total Amount</p>
+            <p className="text-2xl font-bold text-slate-800 mt-2">₹{totals.totalAmount.toLocaleString()}</p>
           </div>
-          <div className="card text-center">
-            <p className="text-caption text-gray-500 uppercase tracking-wider mb-1">Total Paid</p>
-            <p className="text-title-lg text-green-600 font-bold">₹{totals.totalPaid.toLocaleString()}</p>
+          <div className="stat-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Total Paid</p>
+            <p className="text-2xl font-bold text-emerald-600 mt-2">₹{totals.totalPaid.toLocaleString()}</p>
           </div>
-          <div className="card text-center">
-            <p className="text-caption text-gray-500 uppercase tracking-wider mb-1">Total Balance</p>
-            <p className="text-title-lg text-orange-600 font-bold">₹{totals.totalBalance.toLocaleString()}</p>
+          <div className="stat-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Total Balance</p>
+            <p className="text-2xl font-bold text-amber-600 mt-2">₹{totals.totalBalance.toLocaleString()}</p>
           </div>
         </div>
 
-        <div className="card overflow-hidden !p-0">
+        <div className="card !p-0 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -56,28 +58,30 @@ export default function SaleList() {
               <tbody>
                 {sales.map((s) => (
                   <tr key={s.TransactionId} className="table-row">
-                    <td className="p-4 text-navy-900 font-medium">{s.TransactionId}</td>
-                    <td className="p-4 text-navy-900">{s.VendorName}</td>
-                    <td className="p-4 text-navy-900">{s.ProductName}</td>
-                    <td className="p-4 text-navy-900 text-right">{s.Quantity}</td>
-                    <td className="p-4 text-navy-900 text-right">₹{Number(s.Price).toLocaleString()}</td>
-                    <td className="p-4 text-navy-900 text-right font-semibold">₹{Number(s.TotalAmount).toLocaleString()}</td>
-                    <td className="p-4 text-green-600 text-right font-semibold">₹{Number(s.PaidAmount).toLocaleString()}</td>
-                    <td className={`p-4 text-right font-semibold ${Number(s.Balance) > 0 ? "text-red-600" : "text-green-600"}`}>
+                    <td className="p-4 text-sm font-medium text-slate-800">{s.TransactionId}</td>
+                    <td className="p-4 text-sm text-slate-600">{s.VendorName}</td>
+                    <td className="p-4 text-sm text-slate-600">{s.ProductName}</td>
+                    <td className="p-4 text-sm text-slate-600 text-right">{s.Quantity}</td>
+                    <td className="p-4 text-sm text-slate-600 text-right">₹{Number(s.Price).toLocaleString()}</td>
+                    <td className="p-4 text-sm font-medium text-slate-800 text-right">₹{Number(s.TotalAmount).toLocaleString()}</td>
+                    <td className="p-4 text-sm font-medium text-emerald-600 text-right">₹{Number(s.PaidAmount).toLocaleString()}</td>
+                    <td className={`p-4 text-sm font-semibold text-right ${Number(s.Balance) > 0 ? "text-red-600" : "text-emerald-600"}`}>
                       ₹{Number(s.Balance).toLocaleString()}
                     </td>
                   </tr>
                 ))}
                 {sales.length === 0 && (
-                  <tr>
-                    <td colSpan={8} className="p-8 text-center text-gray-400">No sales records found</td>
-                  </tr>
+                  <tr><td colSpan={8} className="p-8 text-center text-sm text-slate-400">No sales records found</td></tr>
                 )}
               </tbody>
             </table>
           </div>
+          <div className="p-4 text-xs text-slate-500 border-t border-slate-100">
+            Showing {sales.length} transactions
+          </div>
         </div>
       </div>
+      <div className="fixed bottom-4 left-4"><PrevButton /></div>
     </div>
   );
 }
