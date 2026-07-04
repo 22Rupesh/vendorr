@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import Header from "./Header";
 import PrevButton from "./PrevButton";
@@ -21,10 +22,10 @@ export default function VendorMaster({ onLogout }) {
   const saveVendor = async () => {
     if (editingId) {
       await axios.put(`${API_BASE}/vendor/update`, { vendorId: editingId, ...form });
-      alert("Vendor updated!");
+      toast.success("Vendor updated!");
     } else {
       await axios.post(`${API_BASE}/vendor/add`, form);
-      alert("Vendor added!");
+      toast.success("Vendor added!");
     }
     setForm({ name: "", email: "", pan: "", mobile: "" }); setEditingId(null); loadVendors();
   };
@@ -122,7 +123,7 @@ export default function VendorMaster({ onLogout }) {
                     <td className="p-4">
                       <div className="flex items-center justify-center gap-2">
                         <button onClick={() => { setEditingId(v.VendorId); setForm({ name: v.Name, email: v.Email, pan: v.PAN, mobile: v.Mobile }); }} className="text-xs font-medium text-primary hover:underline">Edit</button>
-                        <button onClick={async () => { await axios.delete(`${API_BASE}/vendor/delete/${v.VendorId}`); loadVendors(); }} className="text-xs font-medium text-red-500 hover:underline">Delete</button>
+                        <button onClick={async () => { await axios.delete(`${API_BASE}/vendor/delete/${v.VendorId}`); toast.success("Vendor deleted!"); loadVendors(); }} className="text-xs font-medium text-red-500 hover:underline">Delete</button>
                       </div>
                     </td>
                   </tr>

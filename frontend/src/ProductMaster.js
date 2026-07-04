@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import Header from "./Header";
 import PrevButton from "./PrevButton";
@@ -20,15 +21,15 @@ export default function ProductMaster({ onLogout }) {
 
   const addProduct = async () => {
     await axios.post(`${API_BASE}/product/add`, { productName: form.productName, quantity: Number(form.quantity), price: Number(form.price) });
-    alert("Product Added!"); setForm({ productName: "", quantity: "", price: "" }); loadProducts();
+    toast.success("Product Added!"); setForm({ productName: "", quantity: "", price: "" }); loadProducts();
   };
   const updateProduct = async () => {
     await axios.put(`${API_BASE}/product/update`, { productId: editingId, productName: form.productName, quantity: Number(form.quantity), price: Number(form.price) });
-    alert("Product Updated!"); setEditingId(null); setForm({ productName: "", quantity: "", price: "" }); loadProducts();
+    toast.success("Product Updated!"); setEditingId(null); setForm({ productName: "", quantity: "", price: "" }); loadProducts();
   };
   const deleteProduct = async (id) => {
     await axios.delete(`${API_BASE}/product/delete/${id}`);
-    alert("Product Deleted!"); loadProducts();
+    toast.success("Product Deleted!"); loadProducts();
   };
   const increaseQty = async (id) => {
     await axios.put(`${API_BASE}/product/increase`, { productId: id }); loadProducts();

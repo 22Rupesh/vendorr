@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./Home";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -23,6 +25,7 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
       <Routes>
         <Route path="/" element={<Home onLogout={isLoggedIn ? handleLogout : null} />} />
         <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />

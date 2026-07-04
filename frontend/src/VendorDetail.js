@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import Header from "./Header";
 import PrevButton from "./PrevButton";
@@ -33,9 +34,9 @@ export default function VendorDetail({ onLogout }) {
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const addTransaction = async () => {
-    if (!form.productId || !form.quantity || !form.price) { alert("Please fill all fields"); return; }
+    if (!form.productId || !form.quantity || !form.price) { toast.warning("Please fill all fields"); return; }
     await axios.post(`${API_BASE}/vendor/transaction/add`, { vendorId: id, productId: form.productId, quantity: Number(form.quantity), price: Number(form.price), paidAmount: Number(form.paidAmount) });
-    alert("Transaction added!"); setForm({ productId: "", quantity: "", price: "", paidAmount: "" }); refreshVendor();
+    toast.success("Transaction added!"); setForm({ productId: "", quantity: "", price: "", paidAmount: "" }); refreshVendor();
   };
 
   return (

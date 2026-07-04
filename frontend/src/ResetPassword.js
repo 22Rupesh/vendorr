@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import Header from "./Header";
 import PrevButton from "./PrevButton";
@@ -11,11 +12,11 @@ export default function ResetPassword({ onLogout }) {
   const resetPassword = async () => {
     try {
       const res = await axios.post(`${API_BASE}/reset-password`, form);
-      if (res && res.data) alert(res.data.message);
-      else alert("Unexpected server response");
+      if (res && res.data) toast.success(res.data.message);
+      else toast.error("Unexpected server response");
     } catch (err) {
-      if (err.response) alert("Error: " + err.response.data.error);
-      else alert("Network error");
+      if (err.response) toast.error(err.response.data.error);
+      else toast.error("Network error");
     }
   };
 

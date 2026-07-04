@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import PrevButton from "./PrevButton";
 
@@ -14,13 +15,13 @@ export default function Login({ onLogin }) {
     try {
       const res = await axios.post(`${API_BASE}/login`, form);
       if (res && res.data) {
-        alert(res.data.message);
+        toast.success(res.data.message);
         if (onLogin) onLogin();
         navigate("/dashboard");
-      } else alert("Unexpected server response");
+      } else toast.error("Unexpected server response");
     } catch (err) {
-      if (err.response) alert("Error: " + err.response.data.message);
-      else alert("Server not reachable");
+      if (err.response) toast.error(err.response.data.message);
+      else toast.error("Server not reachable");
     }
   };
 

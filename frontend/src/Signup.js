@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import API_BASE from "./api";
 import Header from "./Header";
 import PrevButton from "./PrevButton";
@@ -11,14 +12,14 @@ export default function Signup({ onLogout }) {
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = async () => {
-    if (form.password !== form.confirmPassword) { alert("Passwords do NOT match!"); return; }
+    if (form.password !== form.confirmPassword) { toast.warning("Passwords do NOT match!"); return; }
     try {
       const res = await axios.post(`${API_BASE}/signup`, form);
-      if (res && res.data) { alert(res.data.message); navigate("/login"); }
-      else alert("Unexpected server response.");
+      if (res && res.data) { toast.success(res.data.message); navigate("/login"); }
+      else toast.error("Unexpected server response.");
     } catch (err) {
-      if (err.response) alert("Error: " + err.response.data.error);
-      else alert("Network/Server error occurred");
+      if (err.response) toast.error(err.response.data.error);
+      else toast.error("Network/Server error occurred");
     }
   };
 
