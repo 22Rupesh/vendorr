@@ -9,13 +9,6 @@ const menuItems = [
   { label: "Vendor List", desc: "Active partnership directory with real-time performance indicators.", path: "/vendor-list", action: "Active Partners", icon: "M4 6h16M4 10h16M4 14h16M4 18h16", bgIcon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
 ];
 
-const topVendors = [
-  { name: "Global Trading Co.", orders: 42, pct: 98.4 },
-  { name: "Apex Manufacturing", orders: 38, pct: 96.1 },
-  { name: "Stellar Systems", orders: 19, pct: 94.8 },
-  { name: "Core Electronics", orders: 12, pct: 92.3 },
-];
-
 export default function Dashboard({ onLogout }) {
   const navigate = useNavigate();
   const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
@@ -53,55 +46,6 @@ export default function Dashboard({ onLogout }) {
               </span>
             </button>
           ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div className="card lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-sm font-semibold text-slate-800">Performance Trend</h3>
-                <p className="text-xs text-slate-500 mt-0.5">Vendor fulfillment accuracy over the last 6 months</p>
-              </div>
-              <button className="text-xs text-slate-500 border border-slate-200 px-3 py-1.5 rounded-btn hover:bg-slate-50">Last 6 Months</button>
-            </div>
-            <div className="h-48 flex items-end justify-around gap-2 px-4">
-              {[40, 55, 45, 65, 50, 72].map((h, i) => (
-                <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                  <div className="w-full bg-primary/20 rounded-t" style={{ height: `${h}%` }}>
-                    <div className="w-full bg-primary rounded-t" style={{ height: `${70 + i * 5}%` }}></div>
-                  </div>
-                  <span className="text-xs text-slate-400">{["May", "Jun", "Jul", "Aug", "Sep", "Oct"][i]}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center gap-4 mt-4 text-xs text-slate-500">
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-primary"></span> Fulfilled</span>
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-primary/20"></span> Pending Approval</span>
-            </div>
-          </div>
-
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-800 mb-1">Top Active Vendors</h3>
-            <p className="text-xs text-slate-500 mb-4">Most active partners this month</p>
-            <div className="space-y-3">
-              {topVendors.map((v, i) => (
-                <div key={i} className="flex items-center justify-between p-2.5 rounded-btn hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-xs font-semibold text-slate-600">
-                      {v.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-800">{v.name}</p>
-                      <p className="text-xs text-slate-500">{v.orders} Active Orders</p>
-                    </div>
-                  </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded ${v.pct >= 95 ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"}`}>
-                    {v.pct}%
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
